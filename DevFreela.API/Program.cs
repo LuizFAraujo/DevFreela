@@ -1,8 +1,8 @@
-using DevFreela.API.Models;
-using DevFreela.Application.Services.Implementations;
-using DevFreela.Application.Services.Interfaces;
+using DevFreela.Application.Commands.CreateProject;
 using DevFreela.Infrastructure.Persistence;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,20 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 
-builder.Services.Configure<OpeningTimeOption>(builder.Configuration.GetSection("OpeningTime"));
+//builder.Services.Configure<OpeningTimeOption>(builder.Configuration.GetSection("OpeningTime"));
 
 //builder.Services.AddSingleton<DevFreelaDbContext>();
 
 var connectionString = builder.Configuration.GetConnectionString("DevFreelaCs");
 builder.Services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<IProjectService, ProjectService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ISkillService, SkillService>();
 
 //builder.Services.AddSingleton<ExampleClass>(e => new ExampleClass { Name = "Inicial" });
-builder.Services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Inicial" });
+//builder.Services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Inicial" });
 
+builder.Services.AddMediatR(typeof(CreateProjectCommand));
 
 //----------------------------------------
 builder.Services.AddControllers();
